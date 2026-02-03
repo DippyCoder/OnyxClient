@@ -23,8 +23,8 @@ Instance.new("UICorner", frameK)
 
 local gradK = Instance.new("UIGradient", frameK)
 gradK.Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(90,0,150)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(0,140,255))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(90,0,150)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0,140,255))
 }
 
 local strokeK = Instance.new("UIStroke", frameK)
@@ -76,47 +76,50 @@ Instance.new("UICorner", getKeyBtn)
 
 -- Unlock Funktion
 btnK.MouseButton1Click:Connect(function()
-	if boxK.Text == MASTER_KEY then
-		unlocked = true
-		keyGui:Destroy()
-	else
-		player:Kick("Falscher Key eingegeben!")
-	end
+    if boxK.Text == MASTER_KEY then
+        unlocked = true
+        keyGui:Destroy()
+    else
+        player:Kick("Falscher Key eingegeben!")
+    end
 end)
 
 -- Get Key Funktion
 getKeyBtn.MouseButton1Click:Connect(function()
-	local link = "https://link-hub.net/3243226/RrrLCDA8vw7r" -- hier deinen Link einfügen
+    local link = "https://link-hub.net/3243226/RrrLCDA8vw7r" -- hier deinen Link einfügen
 
-	-- Link in die Zwischenablage kopieren
-	pcall(function()
-		setclipboard(link)
-	end)
+    -- Link in die Zwischenablage kopieren
+    pcall(function()
+        setclipboard(link)
+    end)
 
-	-- Popup erstellen
-	local popup = Instance.new("Frame", keyGui)
-	popup.Size = UDim2.fromOffset(200,50)
-	popup.Position = UDim2.fromScale(0.5,0.3)
-	popup.AnchorPoint = Vector2.new(0.5,0.5)
-	popup.BackgroundColor3 = Color3.fromRGB(30,30,50)
-	Instance.new("UICorner", popup)
+    -- Popup erstellen
+    local popup = Instance.new("Frame", keyGui)
+    popup.Size = UDim2.fromOffset(200,50)
+    popup.Position = UDim2.fromScale(0.5,0.3)
+    popup.AnchorPoint = Vector2.new(0.5,0.5)
+    popup.BackgroundColor3 = Color3.fromRGB(30,30,50)
+    Instance.new("UICorner", popup)
 
-	local text = Instance.new("TextLabel", popup)
-	text.Size = UDim2.fromScale(1,1)
-	text.BackgroundTransparency = 1
-	text.TextColor3 = Color3.new(1,1,1)
-	text.Font = Enum.Font.GothamBold
-	text.TextSize = 16
-	text.Text = "Link kopiert!"
+    local text = Instance.new("TextLabel", popup)
+    text.Size = UDim2.fromScale(1,1)
+    text.BackgroundTransparency = 1
+    text.TextColor3 = Color3.new(1,1,1)
+    text.Font = Enum.Font.GothamBold
+    text.TextSize = 16
+    text.Text = "Link kopiert!"
 
-	-- Popup nach 2 Sekunden entfernen
-	task.delay(2, function()
-		popup:Destroy()
-	end)
+    -- Popup nach 2 Sekunden entfernen
+    task.delay(2, function()
+        popup:Destroy()
+    end)
 end)
 
 -- Warten bis Key freigeschaltet
 repeat task.wait() until unlocked
+
+-- Hier kannst du z.B. 2 Sekunden warten, bevor der Rest startet
+task.wait(2)
 
 
 -- =====================================================
