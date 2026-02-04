@@ -245,7 +245,7 @@ task.wait(2)
 
 
 -- =====================================================
--- ONYX CLINT – GODMODE FIXED + GUI BIND UPGRADE
+-- ONYX CLIENT – GODMODE FIXED + GUI BIND UPGRADE
 -- =====================================================
 
 -- SERVICES
@@ -310,7 +310,7 @@ if player.Character then onChar(player.Character) end
 -- GUI
 -- =====================================================
 local gui = Instance.new("ScreenGui", player.PlayerGui)
-gui.Name = "ONYX_CLINT"
+gui.Name = "ONYX_CLIENT"
 gui.ResetOnSpawn = false
 
 local frame = Instance.new("Frame", gui)
@@ -359,7 +359,7 @@ local function button(text,y)
 	return b
 end
 
-label("ONYX CLINT",10,30)
+label("ONYX CLIENT",10,30)
 
 -- Buttons
 local flyBtn = button("Fly ["..binds.Fly.Name.."]",55)
