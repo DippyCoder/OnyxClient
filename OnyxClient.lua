@@ -114,15 +114,15 @@ btnK.MouseButton1Click:Connect(function()
 	end
 end)
 
--- Get Key Funktion (unchanged)
---getKeyBtn.MouseButton1Click:Connect(function()
---    local link = "https://link-hub.net/3243226/RrrLCDA8vw7r" -- hier deinen Link einfügen
---
---    -- Link in die Zwischenablage kopieren
---    pcall(function()
---        setclipboard(link)
---    end)
---end)
+ Get Key Funktion (unchanged)
+getKeyBtn.MouseButton1Click:Connect(function()
+    local link = "https://link-hub.net/3243226/RrrLCDA8vw7r" -- hier deinen Link einfügen
+
+    -- Link in die Zwischenablage kopieren
+    pcall(function()
+        setclipboard(link)
+    end)
+end)
 
 
     -- Popup erstellen
