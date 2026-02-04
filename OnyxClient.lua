@@ -4,11 +4,11 @@
 
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
-local HttpService = game:GetService("HttpService") -- für JSONDecode
+local HttpService = game:GetService("HttpService")
 
 local unlocked = false
 
--- Prüfen, ob Executor HTTP unterstützt
+-- Executor HTTP check (Xeno compatible)
 local request = request or http_request or syn.request
 if not request then
 	warn("HTTP nicht verfügbar – Script abgebrochen")
@@ -16,9 +16,10 @@ if not request then
 end
 
 -- Key GUI
-local keyGui = Instance.new("ScreenGui", player.PlayerGui)
+local keyGui = Instance.new("ScreenGui")
 keyGui.Name = "ONYX_KEY"
 keyGui.ResetOnSpawn = false
+keyGui.Parent = player:WaitForChild("PlayerGui")
 
 local frameK = Instance.new("Frame", keyGui)
 frameK.Size = UDim2.fromOffset(320,200)
@@ -30,8 +31,8 @@ Instance.new("UICorner", frameK)
 
 local gradK = Instance.new("UIGradient", frameK)
 gradK.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(90,0,150)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(0,140,255))
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(90,0,150)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(0,140,255))
 }
 
 local strokeK = Instance.new("UIStroke", frameK)
@@ -47,7 +48,7 @@ titleK.Font = Enum.Font.GothamBlack
 titleK.TextSize = 22
 titleK.TextColor3 = Color3.new(1,1,1)
 
--- Key Eingabe
+-- Key Input
 local boxK = Instance.new("TextBox", frameK)
 boxK.Size = UDim2.fromOffset(260,36)
 boxK.Position = UDim2.fromOffset(30,70)
@@ -81,47 +82,54 @@ getKeyBtn.TextColor3 = Color3.new(1,1,1)
 getKeyBtn.BackgroundColor3 = Color3.fromRGB(50,20,90)
 Instance.new("UICorner", getKeyBtn)
 
--- URL deiner Key-API
+-- API URL
 local API_URL = "https://onyx-webkeys.vercel.app/api/"
 
--- Unlock Funktion (Xeno-kompatibel)
+-- Unlock Logic (Xeno-safe, no Kick)
 btnK.MouseButton1Click:Connect(function()
 	local inputKey = boxK.Text
 	if inputKey == "" then return end
 
-	local success, response = pcall(function()
+	local ok, response = pcall(function()
 		return request({
 			Url = API_URL .. inputKey,
 			Method = "GET"
 		})
 	end)
 
-	if not success or not response or not response.Body then
-		player:Kick("Fehler beim Überprüfen des Keys!")
+	if not ok or not response then
+		warn("Request failed")
 		return
 	end
 
-	local data
-	pcall(function()
-		data = HttpService:JSONDecode(response.Body)
+	local body = response.Body or response.body or response
+	local successDecode, data = pcall(function()
+		return HttpService:JSONDecode(body)
 	end)
+
+	if not successDecode then
+		warn("JSON decode failed")
+		return
+	end
 
 	if data and data.valid == true then
 		unlocked = true
 		keyGui:Destroy()
 	else
-		player:Kick("Falscher Key eingegeben!")
+		warn("Invalid key entered")
 	end
 end)
 
- Get Key Funktion (unchanged)
+-- =====================================================
+-- Get Key Funktion (unchanged)
+-- =====================================================
 getKeyBtn.MouseButton1Click:Connect(function()
-    local link = "https://link-hub.net/3243226/RrrLCDA8vw7r" -- hier deinen Link einfügen
+	local link = "https://link-hub.net/3243226/RrrLCDA8vw7r" -- hier deinen Link einfügen
 
-    -- Link in die Zwischenablage kopieren
-    pcall(function()
-        setclipboard(link)
-    end)
+	-- Link in die Zwischenablage kopieren
+	pcall(function()
+		setclipboard(link)
+	end)
 end)
 
 
@@ -145,7 +153,6 @@ end)
     task.delay(2, function()
         popup:Destroy()
     end)
-end)
 
 -- Warten bis Key freigeschaltet
 repeat task.wait() until unlocked
